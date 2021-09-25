@@ -10,31 +10,35 @@
 /// ```
 #[macro_export]
 macro_rules! derive_for {
-// Derive tuple
-(($b:ident $(,$a:ident)*) $vis:vis struct $name:ident($($fields:tt)*); $($rest:tt)*) => {
-#[derive($($a,)* $b)]
-$vis struct $name($($fields)*);
-$crate::derive_for!( ($b, $($a,)*) $($rest)*);
-};
-// Derive tuple with trailing derive comma
-(($b:ident $(,$a:ident)*,) $vis:vis struct $name:ident($($fields:tt)*); $($rest:tt)*) => {
-#[derive($($a,)* $b)]
-$vis struct $name($($fields)*);
-$crate::derive_for!( ($b, $($a,)*) $($rest)*);
-};
-// Derive struct
-(($b:ident $(,$a:ident)*) $vis:vis struct $name:ident{ $($fields:tt)* }; $($rest:tt)*) => {
-#[derive($($a,)* $b)]
-$vis struct $name{ $($fields)* }
-$crate::derive_for!( ($b, $($a,)*) $($rest)*);
-};
-// Derive struct with trailing derive comma
-(($b:ident $(,$a:ident)*,) $vis:vis struct $name:ident{ $($fields:tt)* }; $($rest:tt)*) => {
-#[derive($($a,)* $b)]
-$vis struct $name{ $($fields)* }
-$crate::derive_for!( ($b, $($a,)*) $($rest)*);
-};
-(($($_:ident,)*)) => {};
+    // Derive tuple
+    (($b:ident $(,$a:ident)*) $(#[$attr:meta])* $vis:vis struct $name:ident($($fields:tt)*); $($rest:tt)*) => {
+        #[derive($($a,)* $b)]
+        $(#[$attr])*
+        $vis struct $name($($fields)*);
+        derive_for!( ($b, $($a,)*) $($rest)*);
+    };
+    // Derive tuple with trailing derive comma
+    (($b:ident $(,$a:ident)*,) $(#[$attr:meta])* $vis:vis struct $name:ident($($fields:tt)*); $($rest:tt)*) => {
+        #[derive($($a,)* $b)]
+        $(#[$attr])*
+        $vis struct $name($($fields)*);
+        derive_for!( ($b, $($a,)*) $($rest)*);
+    };
+    // Derive struct
+    (($b:ident $(,$a:ident)*) $(#[$attr:meta])* $vis:vis struct $name:ident{ $($fields:tt)* }; $($rest:tt)*) => {
+        #[derive($($a,)* $b)]
+        $(#[$attr])*
+        $vis struct $name{ $($fields)* }
+        derive_for!( ($b, $($a,)*) $($rest)*);
+    };
+    // Derive struct with trailing derive comma
+    (($b:ident $(,$a:ident)*,) $(#[$attr:meta])* $vis:vis struct $name:ident{ $($fields:tt)* }; $($rest:tt)*) => {
+        #[derive($($a,)* $b)]
+        $(#[$attr])*
+        $vis struct $name{ $($fields)* }
+        derive_for!( ($b, $($a,)*) $($rest)*);
+    };
+    (($($_:ident,)*)) => {};
 }
 
 #[cfg(test)]
