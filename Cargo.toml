@@ -4,6 +4,7 @@ version = "0.2.1"
 edition = "2018"
 license-file = "LICENSE.txt"
 readme = "README.md"
+repository = "https://github.com/ten3roberts/derive-for"
 description = "Macro for defining structs using the same derive procedural macros"
 documentation = "https://docs.rs/derive_for"
 
