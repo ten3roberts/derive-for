@@ -7,7 +7,7 @@ same derives to create transparent newtypes.
 ## Usage
 ```rust
 derive_for!(
-( Clone, Debug, PartialEq, Eq)
+( Clone, Debug, PartialEq, Eq),
 pub struct Foo{a: i32, name: String};
 pub struct Bar(u32, u32);
 );

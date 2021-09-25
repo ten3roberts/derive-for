@@ -3,7 +3,7 @@
 /// ```
 /// #[macro_use] extern crate derive_for;
 /// derive_for!(
-/// ( Clone, Debug, PartialEq, Eq)
+/// ( Clone, Debug, PartialEq, Eq),
 /// pub struct Foo{a: i32, name: String};
 /// pub struct Bar(u32, u32);
 /// );
@@ -11,34 +11,34 @@
 #[macro_export]
 macro_rules! derive_for {
     // Derive tuple
-    (($b:ident $(,$a:ident)*) $(#[$attr:meta])* $vis:vis struct $name:ident($($fields:tt)*); $($rest:tt)*) => {
+    (($b:ident $(,$a:ident)*), $(#[$attr:meta])* $vis:vis struct $name:ident($($fields:tt)*); $($rest:tt)*) => {
         #[derive($($a,)* $b)]
         $(#[$attr])*
         $vis struct $name($($fields)*);
-        derive_for!( ($b, $($a,)*) $($rest)*);
+        derive_for!( ($b, $($a,)*), $($rest)*);
     };
     // Derive tuple with trailing derive comma
-    (($b:ident $(,$a:ident)*,) $(#[$attr:meta])* $vis:vis struct $name:ident($($fields:tt)*); $($rest:tt)*) => {
+    (($b:ident $(,$a:ident)*,), $(#[$attr:meta])* $vis:vis struct $name:ident($($fields:tt)*); $($rest:tt)*) => {
         #[derive($($a,)* $b)]
         $(#[$attr])*
         $vis struct $name($($fields)*);
-        derive_for!( ($b, $($a,)*) $($rest)*);
+        derive_for!( ($b, $($a,)*), $($rest)*);
     };
     // Derive struct
-    (($b:ident $(,$a:ident)*) $(#[$attr:meta])* $vis:vis struct $name:ident{ $($fields:tt)* }; $($rest:tt)*) => {
+    (($b:ident $(,$a:ident)*), $(#[$attr:meta])* $vis:vis struct $name:ident{ $($fields:tt)* }; $($rest:tt)*) => {
         #[derive($($a,)* $b)]
         $(#[$attr])*
         $vis struct $name{ $($fields)* }
-        derive_for!( ($b, $($a,)*) $($rest)*);
+        derive_for!( ($b, $($a,)*), $($rest)*);
     };
     // Derive struct with trailing derive comma
-    (($b:ident $(,$a:ident)*,) $(#[$attr:meta])* $vis:vis struct $name:ident{ $($fields:tt)* }; $($rest:tt)*) => {
+    (($b:ident $(,$a:ident)*,), $(#[$attr:meta])* $vis:vis struct $name:ident{ $($fields:tt)* }; $($rest:tt)*) => {
         #[derive($($a,)* $b)]
         $(#[$attr])*
         $vis struct $name{ $($fields)* }
-        derive_for!( ($b, $($a,)*) $($rest)*);
+        derive_for!( ($b, $($a,)*), $($rest)*);
     };
-    (($($_:ident,)*)) => {};
+    (($($_:ident,)*),) => {};
 }
 
 #[cfg(test)]
@@ -47,7 +47,7 @@ mod tests {
     use crate::derive_for;
 
     derive_for!(
-    ( Clone, Debug, PartialEq, Eq)
+    ( Clone, Debug, PartialEq, Eq),
     pub struct Foo{a: i32, name: String};
     pub struct Bar(u32, u32);
         );
